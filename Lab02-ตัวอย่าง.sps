@@ -1,26 +1,26 @@
-* 3.13 สร้างตัวแปร total (ผลรวมเกรด).
-COMPUTE total = SUM(gradePrg1, gradePrg2).
+* ============================================================================.
+* บทที่ 3 ปฏิบัติ: แบบฝึกหัด 2 (ข้อ 1 - 3)
+* ============================================================================.
+
+* ข้อ 1: สร้างตัวแปรใหม่ชื่อ level จาก gradePrg1
+* กำหนดให้เกรด A (4) และ B (3) มีค่าเป็น 1 ส่วนเกรด C (2), D (1) และ F (0) มีค่าเป็น 0.
+RECODE gradePrg1 (4=1) (3=1) (2=0) (1=0) (0=0) INTO level.
 EXECUTE.
 
-* 3.15 สร้างตัวแปร sex (สลับรหัสเพศ).
-RECODE gender (1=2) (2=1) INTO sex.
-EXECUTE.
-
-* 3.16 สร้างตัวแปร GPA1 (เรียงลำดับ GPA จากน้อยไปมาก).
-AUTORECODE VARIABLES=GPA
-  /INTO GPA1
+* ข้อ 2: สร้างตัวแปรใหม่ชื่อ age1 บรรจุค่าลำดับที่ของ age เรียงจากอายุมากสุดไปน้อยสุด
+* ใช้คำสั่ง Automatic Recode แบบ Descending (เรียงจากค่ามากไปน้อย).
+AUTORECODE VARIABLES=age
+  /INTO age1
+  /DESCENDING
   /PRINT.
 
-* 3.17 สร้างตัวแปร AGE1 (นับคนอายุ 20 ปี — รันก่อนที่ age จะโดนเขียนทับ).
-COUNT AGE1 = age(20).
+* ข้อ 3.1: สร้างตัวแปรใหม่ชื่อ up_age เกิดจาก age * 10% (ใน SPSS ใช้ 0.10 หรือ 10/100).
+COMPUTE up_age = age * 0.10.
 EXECUTE.
 
-* 3.18 สร้างตัวแปร Rgpa (จัดอันดับ GPA แยกตามเพศ).
-RANK VARIABLES=GPA (A) BY gender
+* ข้อ 3.2: สร้างตัวแปรใหม่ชื่อ RGPA จัดลำดับที่ของ GPA แยกตามเพศ (gender)
+* กำหนดให้หมายเลข 1 แทนค่า GPA ที่มากที่สุด (D = Descending / Largest value).
+RANK VARIABLES=GPA (D) BY gender
   /RANK
   /PRINT=YES
   /TIES=MEAN.
-
-* 3.14 แปลงค่าในตัวแปร age เดิม (ย้ายมาไว้ท้ายสุดเพื่อไม่ให้กระทบข้อ 3.17).
-RECODE age (Lowest thru 18=1) (19 thru 22=2) (23 thru Highest=3).
-EXECUTE.
